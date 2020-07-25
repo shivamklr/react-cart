@@ -11,9 +11,13 @@ class CartItem extends React.Component {
             img: "",
         };
     }
-    incrementQtyHandler= () => {
-        console.log(this);
-    }
+    incrementQtyHandler = () => {
+        this.setState((prevState) => {
+            return {
+                qty: prevState.qty + 1,
+            };
+        });
+    };
     render() {
         const { price, title, qty, img } = this.state;
         return (
@@ -24,7 +28,7 @@ class CartItem extends React.Component {
                 <div className="right-block">
                     <div style={{ fontSize: 25 }}>{title}</div>
                     <div style={{ color: "#777" }}>{price}</div>
-                    <div style={{ color: "#777" }}>Qty:{qty}</div>
+                    <div style={{ color: "#777" }}>Qty: {qty}</div>
                     <div className="cart-item-actions">
                         {/* Buttons */}
                         <img
