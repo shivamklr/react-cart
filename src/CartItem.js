@@ -2,23 +2,9 @@ import React from "react";
 
 //class based component
 class CartItem extends React.Component {
-   
-    incrementQtyHandler = () => {
-        this.setState((prevState) => {
-            return {
-                qty: prevState.qty + 1,
-            };
-        });
-    };
-    decreaseQtyHandler = () =>{
-        this.setState((prevState)=>{
-            return{
-                qty: prevState.qty > 1 ? prevState.qty - 1 : 1,
-            }
-        })
-    };
     render() {
         const { price, title, qty, img } = this.props.product;
+
         console.log('this.props', this.props);
         
         return (
@@ -36,13 +22,13 @@ class CartItem extends React.Component {
                             alt="increase"
                             className="action-icons"
                             src="https://image.flaticon.com/icons/svg/992/992651.svg"
-                            onClick={this.incrementQtyHandler}
+                            onClick={()=>this.props.onIncreaseQuantity(this.props.product)}
                         />
                         <img
                             alt="decrease"
                             className="action-icons"
                             src="https://image.flaticon.com/icons/svg/992/992683.svg"
-                            onClick = {this.decreaseQtyHandler}
+                            onClick = {()=>this.props.onDecreaseQuantity(this.props.product)}
                         />
                         <img
                             alt="delete"
