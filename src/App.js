@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "./Navbar";
 import Cart from "./Cart";
+import * as firebase from "firebase";
 
 class App extends React.Component {
     constructor() {
@@ -30,6 +31,20 @@ class App extends React.Component {
                 },
             ],
         };
+    }
+    componentDidMount() {
+        firebase
+      .firestore()
+      .collection("products")
+      .get()
+      .then(snapshot => {
+        const products = snapshot.docs.map(doc => {
+          const data = doc.data();
+          data["id"] = doc.id;
+          return data;
+        });
+        this.setState({ products: products, loading: false });
+      });
     }
     handleIncreaseQuantity = (product) => {
         const { products } = this.state;
@@ -82,7 +97,10 @@ class App extends React.Component {
                     onDecreaseQuantity={this.handleDecreaseQuantity}
                     onDeleteItem={this.handleDeleteItem}
                 />
-                <div style={{padding:10, fontSize:20}}> Total:{this.getCartTotal()}</div>
+                <div style={{ padding: 10, fontSize: 20 }}>
+                    {" "}
+                    Total:{this.getCartTotal()}
+                </div>
             </div>
         );
     }
