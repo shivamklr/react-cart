@@ -8,22 +8,24 @@ class App extends React.Component {
         super();
         this.state = {
             products: [],
-            loading : true,
+            loading: true,
         };
     }
     componentDidMount() {
         firebase
-      .firestore()
-      .collection("products")
-      .get()
-      .then((snapshot) => {
-        const products = snapshot.docs.map(doc => {
-          const data = doc.data();
-          data["id"] = doc.id;
-          return data;
-        });
-        this.setState({ products: products, loading: false });
-      });
+            .firestore()
+            .collection("products")
+            .onSnapshot((snapshot) => {
+                
+                const products = snapshot.docs.map((doc) => {
+                    const data = doc.data();
+                    console.log(data);
+                    data["id"] = doc.id;
+                    return data;
+                });
+
+                this.setState({ products: products, loading: false });
+            });
     }
     handleIncreaseQuantity = (product) => {
         const { products } = this.state;
@@ -67,7 +69,7 @@ class App extends React.Component {
         return total;
     };
     render() {
-        const {products, loading} = this.state;
+        const { products, loading } = this.state;
         return (
             <div className="App">
                 <Navbar count={this.getCartCount()} />
