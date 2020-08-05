@@ -7,29 +7,8 @@ class App extends React.Component {
     constructor() {
         super();
         this.state = {
-            products: [
-                {
-                    price: 500,
-                    title: "Phone",
-                    qty: 3,
-                    img: "",
-                    id: 1,
-                },
-                {
-                    price: 99,
-                    title: "Watch",
-                    qty: 2,
-                    img: "",
-                    id: 2,
-                },
-                {
-                    price: 1099,
-                    title: "Television",
-                    qty: 1,
-                    img: "",
-                    id: 3,
-                },
-            ],
+            products: [],
+            loading : true,
         };
     }
     componentDidMount() {
@@ -37,7 +16,7 @@ class App extends React.Component {
       .firestore()
       .collection("products")
       .get()
-      .then(snapshot => {
+      .then((snapshot) => {
         const products = snapshot.docs.map(doc => {
           const data = doc.data();
           data["id"] = doc.id;
@@ -88,17 +67,18 @@ class App extends React.Component {
         return total;
     };
     render() {
+        const {products, loading} = this.state;
         return (
             <div className="App">
                 <Navbar count={this.getCartCount()} />
                 <Cart
-                    products={this.state.products}
+                    products={products}
                     onIncreaseQuantity={this.handleIncreaseQuantity}
                     onDecreaseQuantity={this.handleDecreaseQuantity}
                     onDeleteItem={this.handleDeleteItem}
                 />
+                {loading && <h1>Loading Products..</h1>}
                 <div style={{ padding: 10, fontSize: 20 }}>
-                    {" "}
                     Total:{this.getCartTotal()}
                 </div>
             </div>
